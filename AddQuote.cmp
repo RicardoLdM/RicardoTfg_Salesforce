@@ -1,0 +1,49 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningquickactionwithoutheader,lightning:availableForFlowActions">
+
+    <aura:attribute name="newQuote" type="Object"/>
+    <aura:attribute name="simpleNewQuote" type="Object"/>
+    <aura:attribute name="newQuoteError" type="String"/>
+
+   
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <force:recordData aura:id="quoteRecordCreator" 
+                      layoutType="FULL"
+                      targetRecord="{!v.newQuote}"
+                      targetFields="{!v.simpleNewQuote}"
+                      targetError="{!v.newQuoteError}" />
+                      
+    <div class="slds-form">
+        <lightning:card iconName="action:quote" title="Añadir oferta">
+            <div class="slds-p-horizontal--small">
+                
+                <lightning:input label="Nombre de la Oferta" value="{!v.simpleNewQuote.Name}" required="true"/>
+                
+                <lightning:Select label="Estado" value="{!v.simpleNewQuote.Status__c}">
+                	<option value="Nuevo">Nuevo</option>
+                    <option value="Necesita aporbación">Necesita aporbación</option>
+                    <option value="Aprobada">Aprobada</option>
+                    <option value="Rechazada">Rechazada</option>
+                    <option value="Presentada">Presentada</option>
+                    <option value="Ganada">Ganada</option>
+                    <option value="Perdida">Perdida</option>
+                </lightning:Select>
+                
+                <c:LightningLookup sObjectName="Opportunity" displayedFieldName="Name"
+                    valueFieldName="Id" label="Nombre de Oportunidad" selectedValue="{!v.simpleNewQuote.Opportunity_Name__c}" required="true"/>
+
+                <lightning:input  type="date" label="Fecha de expiración"
+                    value="{!v.simpleNewQuote.Fecha_de_expiracion__c}" dateStyle="short" />
+                   
+                <br/>
+                <lightning:button label="Guardar" variant="brand" onclick="{!c.handleSaveQuote}"/>
+            </div>
+        </lightning:card>
+    </div>
+
+    <aura:if isTrue="{!not(empty(v.newQuoteError))}">
+        <div class="recordError">
+            {!v.newQuoteError}</div>
+    </aura:if>
+
+</aura:component>

@@ -1,0 +1,76 @@
+<apex:page showHeader="false" standardController="Quote__c" extensions="SaveAsPdfExtension"
+    contentType="{! renderedContentType }" renderAs="{! renderingService }">
+    
+
+    <apex:form rendered="{! renderingService != 'PDF' }"
+               style="text-align: right; margin: 10px;">
+        <apex:commandLink action="{! saveToPdf }" value="Guardar PDF">
+            <apex:param assignTo="{! renderedFileName }" value="Factura.pdf"/>
+        </apex:commandLink>
+        <hr/>
+    </apex:form>
+    
+    <head>
+        <style type="text/css">
+            .container{
+            	margin: 3%;
+            }
+            
+             table {
+            	width: 100%;
+            }
+            th {
+            	color: white;
+            	background-color: #828282;
+            }
+            .padd{
+            	padding-right: 6%;
+            }
+        </style>
+    </head>
+
+    <body>
+         <div class="container">
+            <img src="https://cunning-bear-4c5dhg-dev-ed--c.documentforce.com/servlet/servlet.FileDownload?file=0155J000000DYx9" width="22%" height="22%"/>
+            <br/>
+            <br/>
+			<table>
+				<tr>
+                    <td><apex:outputText value="Número de oferta: "/><apex:outputField value="{!Quote__c.Quote_Number__c}"/></td>
+                </tr>
+                <tr>
+                    <td><apex:outputText value="Nombre de la cuenta: "/><apex:outputField value="{!Quote__c.Account_Name__r.Name}"/></td>
+                </tr>
+                <tr>
+                    <td><apex:outputText value="Descripción: "/><apex:outputField value="{! Quote__c.Description__c}"/></td>
+                </tr>
+            </table>
+             <br/><br/>
+            <table style="width: 100%;">
+                <tr>
+                    <th colspan="2" style="color: white; background-color: #828282;">Total</th>
+                </tr>
+                <tr>
+                	<td class="padd"><apex:outputText value="Suma de todos los productos: "/><apex:outputField value="{! Quote__c.Precio_Final_Productos__c}"/></td>
+                    <td><apex:outputText value="Gastos de transporte: "/><apex:outputField value="{! Quote__c.Gastos_de_transporte__c}"/></td>
+                </tr>
+                <tr>
+                	<td class="padd"><apex:outputText value="Total descuentos: "/><apex:outputField value="{! Quote__c.Total_Descuentos__c}"/></td>
+                    <td><apex:outputText value="Impuesto: "/><apex:outputField value="{! Quote__c.Impuesto__c}"/></td>
+                </tr>
+                <tr>
+                	<td class="padd"><apex:outputText value="% Descuento Total aplicado: "/><apex:outputField value="{! Quote__c.Descuento_Total_aplicado__c}"/></td>
+                    <td><apex:outputText value="Total Impuestos y transporte: "/><apex:outputField value="{! Quote__c.Total_Impuestos__c}"/></td>
+                </tr>
+                <tr>
+                	<td class="padd"><apex:outputText value="Subtotal: "/><apex:outputField value="{! Quote__c.Importe_Total_Productos__c}"/></td>
+                    <td><apex:outputText value="Importe total "/><apex:outputField value="{! Quote__c.Importe_total__c}"/></td>
+                </tr>
+             </table><br/>
+            Muchas gracias por su compra.
+            <br/>
+             <p style="color: white;"><apex:outputText value=" {! renderedContentType }"/></p>
+        </div>
+    </body>
+    
+</apex:page>
